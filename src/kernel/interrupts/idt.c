@@ -22,7 +22,7 @@ void idt_set_gate(uint8_t vector, void* handler, uint8_t flags) {
 }
 
 void idt_init() {
-	print_color("IDT initialization...\n", 0x0A);
+	//print_color("IDT initialization...\n", 0x0A);
 	idtp.limit = (sizeof(struct idt_entry) * 256) - 1;
 	idtp.base = (uintptr_t)&idt;
 

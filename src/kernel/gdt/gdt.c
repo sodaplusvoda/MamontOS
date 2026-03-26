@@ -1,13 +1,15 @@
 #include "gdt/gdt.h"
 #include "debug/print.h"
+#include "mem/string.h"
 
+extern uint8_t stack_top[];
 struct gdt_struct gdt;
 struct tss_entry tss;
 
 extern void gdt_load(struct gdt_ptr* ptr);
 
 void gdt_init() {
-	print_color("GDT initialization...\n", 0x02);
+	print_color("GDT initialization...\n", 0x00FF00);
 
 	//for(int i = 0; i < sizeof(struct gdt_struct); i++) ((uint8_t*)&gdt)[i] = 0;
 	//for(int i = 0; i < sizeof(struct tss_entry); i++) ((uint8_t*)&tss)[i] = 0;
@@ -28,6 +30,8 @@ void gdt_init() {
 	gdt.target[4] = (struct gdt_entry){0, 0, 0, 0xFA, 0x20, 0};
 
 	//TSS
+	memset(&tss, 0, sizeof(tss));
+	tss.rsp0 = (uint64_t)stack_top;
 	uint64_t tss_base = (uint64_t)&tss;
 	gdt.tss.limit_low = sizeof(struct tss_entry) - 1;
 	gdt.tss.base_low = tss_base & 0xFFFF;
@@ -41,9 +45,9 @@ void gdt_init() {
 
 	uint64_t gdt_base = (uint64_t)&gdt;
 
-	print_color("GDT Base Address: ", 0x07);
+	print_color("GDT Base Address: ", 0x00FF00);
 	print_hex64(gdt_base);
-	print_color("\n", 0x07);
+	print_color("\n", 0x00FF00);
 
 	struct gdt_ptr ptr;
 	ptr.limit = sizeof(struct gdt_struct) - 1;

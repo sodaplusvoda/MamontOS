@@ -2,7 +2,8 @@ section .bss
 align 4096
 p4_table: resb 4096
 p3_table: resb 4096
-p2_table: resb 4096
+p2_table: resb 4096 * 4
+global stack_top
 stack_bottom:
 	resb 4096 * 4
 stack_top:
@@ -17,6 +18,7 @@ extern long_mode_start
 start:
 	mov esp, stack_top
 	mov edi, ebx
+
 	;Настройка таблиц страниц
 	mov eax, p3_table
 	or eax, 0b11
@@ -26,15 +28,30 @@ start:
 	or eax, 0b11
 	mov [p3_table], eax
 
-	;Отображаем 1ГБ через Huge Pages
+	mov eax, p2_table
+	add eax, 4096
+	or eax, 0b11
+	mov [p3_table + 8], eax
+
+	mov eax, p2_table
+	add eax, 8192
+	or eax, 0b11
+	mov [p3_table + 16], eax
+
+	mov eax, p2_table
+	add eax, 12288
+	or eax, 0b11
+	mov [p3_table + 24], eax
+
 	mov ecx, 0
 .map_p2_table:
-	mov eax, 0x200000 ; 2МБ
+	mov eax, 0x200000
 	mul ecx
 	or eax, 0b10000011
 	mov [p2_table + ecx * 8], eax
+    
 	inc ecx
-	cmp ecx, 512
+	cmp ecx, 2048
 	jne .map_p2_table
 
 	;Передача P4 процессору
