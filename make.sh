@@ -9,15 +9,21 @@ nasm -f elf64 src/bootloader/interrupts.asm -o build/interrupts.o
 x86_64-elf-gcc -c src/kernel/debug/print.c -o build/print.o -ffreestanding -O2 -Wall -Iinclude
 x86_64-elf-gcc -c src/kernel/interrupts/idt.c -o build/idt.o -ffreestanding -O2 -Wall -Iinclude
 x86_64-elf-gcc -c src/kernel/interrupts/handlers.c -o build/handlers.o -ffreestanding -O2 -Wall -Iinclude
-x86_64-elf-gcc -c src/kernel/gdt/gdt.c -o build/gdt.o -ffreestanding -O2 -Wall -Iinclude
-x86_64-elf-gcc -c src/kernel/pic/pic.c -o build/pic.o -ffreestanding -O2 -Wall -Iinclude
+x86_64-elf-gcc -c src/kernel/arch/x86_64/gdt/gdt.c -o build/gdt.o -ffreestanding -O2 -Wall -Iinclude
+x86_64-elf-gcc -c src/kernel/arch/x86_64/pic/pic.c -o build/pic.o -ffreestanding -O2 -Wall -Iinclude
+x86_64-elf-gcc -c src/kernel/arch/x86_64/io-hardware/ports.c -o build/ports.o -ffreestanding -O2 -Wall -Iinclude
+x86_64-elf-gcc -c src/kernel/arch/x86_64/io-hardware/mmio.c -o build/mmio.o -ffreestanding -O2 -Wall -Iinclude
+x86_64-elf-gcc -c src/kernel/arch/x86_64/apic/apic.c -o build/apic.o -ffreestanding -O2 -Wall -Iinclude
+x86_64-elf-gcc -c src/kernel/arch/x86_64/apic/lapic.c -o build/lapic.o -ffreestanding -O2 -Wall -Iinclude
+x86_64-elf-gcc -c src/kernel/arch/x86_64/apic/ioapic.c -o build/ioapic.o -ffreestanding -O2 -Wall -Iinclude
+x86_64-elf-gcc -c src/kernel/arch/x86_64/apic/acpi.c -o build/acpi.o -ffreestanding -O2 -Wall -Iinclude
 x86_64-elf-gcc -c src/kernel/mem/string.c -o build/string.o -ffreestanding -O2 -Wall -Iinclude
 x86_64-elf-gcc -c src/kernel/mem/alloc/early_alloc.c -o build/early_alloc.o -ffreestanding -O2 -Wall -Iinclude
 x86_64-elf-gcc -c src/kernel/mem/alloc/buddy_alloc.c -o build/buddy_alloc.o -ffreestanding -O2 -Wall -Iinclude
 x86_64-elf-gcc -c src/kernel/kernel.c -o build/kernel.o -ffreestanding -O2 -Wall -Iinclude
 
 ld -m elf_x86_64 -T src/linker.ld \
-   -o build/kernel.bin build/gdt_asm.o build/interrupts.o build/header.o build/boot.o build/boot64.o build/print.o build/gdt.o build/idt.o build/handlers.o build/pic.o build/string.o build/early_alloc.o build/buddy_alloc.o build/kernel.o
+   -o build/kernel.bin build/gdt_asm.o build/interrupts.o build/header.o build/boot.o build/boot64.o build/print.o build/gdt.o build/idt.o build/handlers.o build/pic.o build/mmio.o build/ports.o build/apic.o build/acpi.o build/ioapic.o build/lapic.o build/string.o build/early_alloc.o build/buddy_alloc.o build/kernel.o
 
 mkdir -p iso/boot/grub
 cp build/kernel.bin iso/boot/
@@ -34,4 +40,4 @@ EOF
 
 grub-mkrescue -o MamontOS.iso iso
 grub-file --is-x86-multiboot2 build/kernel.bin
-qemu-system-x86_64 -cdrom MamontOS.iso -m 512M
+qemu-system-x86_64 -cdrom MamontOS.iso -m 64M

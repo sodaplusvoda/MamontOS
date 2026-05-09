@@ -57,7 +57,7 @@ void set_cursor(uint32_t x, uint32_t y) {
 void fb_scroll() {
 	if (!fb_addr) return;
 
-	uint32_t line_height = 10;
+	uint32_t line_height = 16;
 	uint32_t bytes_per_line = fb_pitch; 
 	uint32_t scroll_region_height = fb_height - line_height;
 
@@ -86,13 +86,13 @@ void print_char(uint32_t x, uint32_t y, char c, uint32_t color) {
 
 void print_color(const char *str, uint32_t color) {
 	while (*str) {
-		if (cursor_y + 10 > fb_height) {
+		if (cursor_y + 16 > fb_height) {
 			fb_scroll();
 		}
 
 		if (*str == '\n') {
 			cursor_x = 0;
-			cursor_y += 10;
+			cursor_y += 16;
 		} else if (*str == '\t') {
 			cursor_x += 32; 
 		} else {
@@ -102,7 +102,7 @@ void print_color(const char *str, uint32_t color) {
 
 		if (cursor_x + 8 > fb_width) {
 			cursor_x = 0;
-			cursor_y += 10;
+			cursor_y += 16;
 		}
         
 		str++;

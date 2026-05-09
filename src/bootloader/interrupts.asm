@@ -30,6 +30,12 @@ irq0_handler:
 	push 32 ;Номер прерывания
 	jmp interrupt_common
 
+global irq1_handler
+irq1_handler:
+    push 0
+    push 33 ;IRQ 1 -> 32 + 1
+    jmp interrupt_common
+
 interrupt_common:
 	push rax
 	push rbx

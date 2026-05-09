@@ -1,6 +1,7 @@
 #include "debug/print.h"
-#include "gdt/gdt.h"
-#include "pic/pic.h"
+#include "arch/x86_64/gdt/gdt.h"
+#include "arch/x86_64/pic/pic.h"
+#include "arch/x86_64/apic/apic.h"
 #include "interrupts/idt.h"
 #include "multiboot2/multiboot2.h"
 #include "mem/alloc/early_alloc.h"
@@ -26,6 +27,7 @@ void kernel_main(uint64_t multiboot_addr) {
 	pit_init(100);
 	outb(PIC1_DATA, 0xfe);
 	outb(PIC2_DATA, 0xff);
+	apic_init();
 	uint64_t total_ram = 0;
 
 	__asm__ volatile("sti");

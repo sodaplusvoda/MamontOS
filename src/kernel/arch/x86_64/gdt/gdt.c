@@ -1,6 +1,6 @@
-#include "gdt/gdt.h"
-#include "debug/print.h"
-#include "mem/string.h"
+#include <arch/x86_64/gdt/gdt.h>
+#include <debug/print.h>
+#include <mem/string.h>
 
 extern uint8_t stack_top[];
 struct gdt_struct gdt;

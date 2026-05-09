@@ -1,7 +1,8 @@
 #pragma once
 
 #include "debug/print.h"
-#include "pic/pic.h"
+#include "arch/x86_64/pic/pic.h"
+#include "arch/x86_64/apic/apic.h"
 #include <stdint.h>
 
 struct interrupt_frame {

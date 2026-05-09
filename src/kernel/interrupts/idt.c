@@ -8,6 +8,7 @@ extern void exception_stub_3();
 extern void exception_stub_13();
 extern void exception_stub_14();
 extern void irq0_handler();
+extern void irq1_handler();
 
 void idt_set_gate(uint8_t vector, void* handler, uint8_t flags) {
 	uintptr_t base = (uintptr_t)handler;
@@ -35,6 +36,7 @@ void idt_init() {
 	idt_set_gate(13, exception_stub_13, IDT_TA_InterruptGate);
 	idt_set_gate(14, exception_stub_14, IDT_TA_InterruptGate);
 	idt_set_gate(32, irq0_handler, IDT_TA_InterruptGate);
+	idt_set_gate(33, irq1_handler, IDT_TA_InterruptGate);
 
 	__asm__ volatile ("lidt %0" : : "m"(idtp));
 	//print_color("Testing IDT...\n", 0x0f);

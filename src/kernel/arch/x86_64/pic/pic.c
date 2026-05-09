@@ -1,4 +1,4 @@
-#include "pic/pic.h"
+#include "arch/x86_64/pic/pic.h"
 
 void outb(uint16_t port, uint8_t val) {
 	__asm__ volatile ( "outb %b0, %w1" 
@@ -77,9 +77,9 @@ void pic_remap(uint8_t offset1, uint8_t offset2) {
 	io_wait();
 
 	//Настройка связки Master/Slave
-	outb(PIC1_DATA, 4);  //Сообщаем Master, что Slave на IRQ2
+	outb(PIC1_DATA, 4); //Сообщаем Master, что Slave на IRQ2
 	io_wait();
-	outb(PIC2_DATA, 2);  //Сообщаем Slave его каскадный ID (2)
+	outb(PIC2_DATA, 2); //Сообщаем Slave его каскадный ID (2)
 	io_wait();
 
 	outb(PIC1_DATA, ICW4_8086);

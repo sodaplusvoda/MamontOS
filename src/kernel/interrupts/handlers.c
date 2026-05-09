@@ -71,6 +71,6 @@ void isr_handler(struct interrupt_frame* frame) {
 			print_hex64(timer_ticks);
 			print_color("\n", 0xFFFF00);
 		}
-		pic_sendeoi(0);
+		lapic_eoi();
 	}
 }
