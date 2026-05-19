@@ -1,5 +1,13 @@
 #include <stdint.h>
 
+#define MULTIBOOT_TAG_TYPE_END 0
+#define MULTIBOOT_TAG_TYPE_MMAP 6
+#define MULTIBOOT_MEMORY_AVAILABLE 1
+#define MULTIBOOT_MEMORY_RESERVED 2
+#define MULTIBOOT_MEMORY_ACPI_RECLAIMABLE 3
+#define MULTIBOOT_MEMORY_NVS 4
+#define MULTIBOOT_MEMORY_BADRAM 5
+
 struct multiboot_tag {
     uint32_t type;
     uint32_t size;

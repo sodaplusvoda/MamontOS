@@ -5,7 +5,6 @@
 #include "interrupts/idt.h"
 #include "multiboot2/multiboot2.h"
 #include "mem/alloc/early_alloc.h"
-#include "mem/bitmap.h"
 #include "mem/pmm.h"
 #include "mem/vmm.h"
 
@@ -15,13 +14,18 @@ extern uint8_t gdt64[];
 extern uint8_t stack_top[];
 
 void kernel_main(uint64_t multiboot_addr) {
-	fb_init((struct multiboot_info *)multiboot_addr);
+	struct multiboot_info* mb_info = (struct multiboot_info*)multiboot_addr;
+	fb_init(mb_info);
+	//fb_init((struct multiboot_info *)multiboot_addr);
+
 	cls(0x000000);
 	print_color("MamontOS initialization...\n", 0xFFFFFF);
 	print_color("Multiboot Information Address: ", 0xFFFF00);
 	print_hex64(multiboot_addr);
 	print_color("\n", 0xFFFFFF);
 	gdt_init();
+	pmm_init(mb_info);
+
 	idt_init();
 	pic_remap(0x20, 0x28);
 	pit_init(100);

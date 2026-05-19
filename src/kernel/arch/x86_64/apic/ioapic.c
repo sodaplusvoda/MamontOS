@@ -31,7 +31,7 @@ void ioapic_init() {
 	uintptr_t ioapic_addr = IOAPIC_BASE_DEFAULT;
 	ioapic_enable_irq(ioapic_addr, 1, 0x21, 0);
 	//print_color("IOAPIC: IRQ 1 Keyboard redirected to vector 0x21\n", 0x00FF00);
-	print_color("IOAPIC init. IOAPIC Base: ", 0x00FF00);
+	print_color("[IOAPIC] IOAPIC init. IOAPIC Base: ", 0x00FF00);
 	print_hex64(g_ioapic_base);
 	print_color("\n", 0x00FF00); 
 }

@@ -9,7 +9,7 @@ struct tss_entry tss;
 extern void gdt_load(struct gdt_ptr* ptr);
 
 void gdt_init() {
-	print_color("GDT initialization...\n", 0x00FF00);
+	print_color("[GDT] Initialization...\n", 0x00FF00);
 
 	//for(int i = 0; i < sizeof(struct gdt_struct); i++) ((uint8_t*)&gdt)[i] = 0;
 	//for(int i = 0; i < sizeof(struct tss_entry); i++) ((uint8_t*)&tss)[i] = 0;
@@ -45,7 +45,7 @@ void gdt_init() {
 
 	uint64_t gdt_base = (uint64_t)&gdt;
 
-	print_color("GDT Base Address: ", 0x00FF00);
+	print_color("[GDT] Base Address: ", 0x00FF00);
 	print_hex64(gdt_base);
 	print_color("\n", 0x00FF00);
 

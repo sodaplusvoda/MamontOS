@@ -27,7 +27,7 @@ void lapic_init() {
 	//0x1FF = 0x100 (Enable) | 0xFF (Vector)
 	mmio_write32(g_lapic_base + LAPIC_REG_SIV, 0x1FF);
 
-	print_color("LAPIC init. LAPIC Base: ", 0x00FF00);
+	print_color("[LAPIC] LAPIC init. LAPIC Base: ", 0x00FF00);
 	print_hex64(g_lapic_base);
 	print_color("\n", 0x00FF00); 
 }

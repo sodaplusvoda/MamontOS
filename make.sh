@@ -20,10 +20,12 @@ x86_64-elf-gcc -c src/kernel/arch/x86_64/apic/acpi.c -o build/acpi.o -ffreestand
 x86_64-elf-gcc -c src/kernel/mem/string.c -o build/string.o -ffreestanding -O2 -Wall -Iinclude
 x86_64-elf-gcc -c src/kernel/mem/alloc/early_alloc.c -o build/early_alloc.o -ffreestanding -O2 -Wall -Iinclude
 x86_64-elf-gcc -c src/kernel/mem/alloc/buddy_alloc.c -o build/buddy_alloc.o -ffreestanding -O2 -Wall -Iinclude
+x86_64-elf-gcc -c src/kernel/mem/pmm.c -o build/pmm.o -ffreestanding -O2 -Wall -Iinclude
+x86_64-elf-gcc -c src/kernel/mem/vmm.c -o build/vmm.o -ffreestanding -O2 -Wall -Iinclude
 x86_64-elf-gcc -c src/kernel/kernel.c -o build/kernel.o -ffreestanding -O2 -Wall -Iinclude
 
 ld -m elf_x86_64 -T src/linker.ld \
-   -o build/kernel.bin build/gdt_asm.o build/interrupts.o build/header.o build/boot.o build/boot64.o build/print.o build/gdt.o build/idt.o build/handlers.o build/pic.o build/mmio.o build/ports.o build/apic.o build/acpi.o build/ioapic.o build/lapic.o build/string.o build/early_alloc.o build/buddy_alloc.o build/kernel.o
+   -o build/kernel.bin build/gdt_asm.o build/interrupts.o build/header.o build/boot.o build/boot64.o build/print.o build/gdt.o build/idt.o build/handlers.o build/pic.o build/mmio.o build/ports.o build/apic.o build/acpi.o build/ioapic.o build/lapic.o build/string.o build/early_alloc.o build/buddy_alloc.o build/pmm.o build/kernel.o
 
 mkdir -p iso/boot/grub
 cp build/kernel.bin iso/boot/

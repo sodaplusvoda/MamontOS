@@ -3,7 +3,7 @@
 static buddy_allocator_t main_buddy;
 
 static uintptr_t get_buddy_addr(uintptr_t addr, uint8_t order) {
-	return addr ^ (1UL << (12 + order)); //12 это log2(4096)
+	return addr ^ (1ULL << (12 + order)); //12 это log2(4096)
 }
 
 void buddy_init(uintptr_t base, uint64_t page_count) {
@@ -20,7 +20,7 @@ void buddy_init(uintptr_t base, uint64_t page_count) {
 
 	//Идем от самого большого порядка к самому маленькому
 	for (int i = MAX_ORDER - 1; i >= 0; i--) {
-		uint64_t block_size = (1UL << i); //размер в страницах
+		uint64_t block_size = (1ULL << i); //размер в страницах
         
 		while (pages_left >= block_size) {
 			buddy_block_t* block = (buddy_block_t*)current_base;
@@ -45,7 +45,7 @@ void* buddy_alloc(uint8_t order) {
 			//Расщепляем большие блоки на части (buddies)
 			while (i > order) {
 				i--;
-				uintptr_t buddy_addr = (uintptr_t)block + (1UL << (12 + i));
+				uintptr_t buddy_addr = (uintptr_t)block + (1ULL << (12 + i));
 				buddy_block_t* buddy = (buddy_block_t*)buddy_addr;
 		        
 				//Добавляем близнеца в список меньшего порядка
@@ -67,7 +67,7 @@ void buddy_free(void* ptr, uint8_t order) {
 	while (order < MAX_ORDER - 1) {
 		//Находим адрес близнеца (buddy)
 		//Формула XOR с размером текущего блока
-		uintptr_t buddy_relative_addr = relative_addr ^ (1UL << (12 + order));
+		uintptr_t buddy_relative_addr = relative_addr ^ (1ULL << (12 + order));
 		uintptr_t buddy_addr = buddy_relative_addr + main_buddy.start_addr;
 
 		//Ищем близняшку в списке свободных блоков текущего порядка

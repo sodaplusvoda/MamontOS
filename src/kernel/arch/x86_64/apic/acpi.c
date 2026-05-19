@@ -5,7 +5,7 @@
 extern uintptr_t g_ioapic_base;
 
 //Поиск RSDP (Root System Description Pointer)
-//Он находится либо в первых 1 КБ EBDA (Extended BIOS Data Area), либо в области памяти BIOS между 0x000E0000 и 0x000FFFFF.
+//Он находится либо в первых 1 КБ EBDA (Extended BIOS Data Area), либо в области памяти BIOS между 0x000E0000 - 0x000FFFFF.
 acpi_rsdp_t* acpi_find_rsdp() {
 	for (uintptr_t addr = 0x000E0000; addr < 0x000FFFFF; addr += 16) {
 		if (memcmp((void*)addr, "RSD PTR ", 8) == 0) {
@@ -69,7 +69,7 @@ void madt_parse(acpi_header_t* madt) {
 			uint8_t irq = ptr[3];
 			uint32_t gsi = *(uint32_t*)(ptr + 4); //Куда он воткнут в IOAPIC
             
-			print_color("MADT: IRQ ", 0x00FF00);
+			print_color("[MADT] IRQ ", 0x00FF00);
 			print_hex64(irq);
 			print_color(" redirected to GSI ", 0x00FF00);
 			print_hex64(gsi);

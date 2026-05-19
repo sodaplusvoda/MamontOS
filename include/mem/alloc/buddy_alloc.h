@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#define MAX_ORDER 11 //Макс блок 4 КБ * 2^10 = 4 МБ
+#define MAX_ORDER 18 //Макс блок 4 КБ * 2^17 = 512 МБ
 
 typedef struct buddy_block {
     struct buddy_block* next;

@@ -5,3 +5,4 @@
 
 void early_init(uint64_t base_addr, uint64_t size);
 void* early_alloc(size_t size);
+uintptr_t early_get_next_addr(void);

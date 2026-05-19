@@ -26,3 +26,7 @@ void* early_alloc(size_t size) {
 void early_init(uint64_t base_addr, uint64_t size) {
 	next_free_addr = base_addr;
 }
+
+uintptr_t early_get_next_addr(void) {
+    return next_free_addr;
+}
